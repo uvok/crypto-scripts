@@ -4,13 +4,24 @@ import ccxt
 from ccxt.base import errors as err
 import config
 
-kraken = ccxt.kraken({
+if hasattr(config, "APIKEY") and hasattr(config, "SECRET"):
+    isauth = True
+    args = {
         "apiKey": config.APIKEY,
         "secret": config.SECRET,
         "enableRateLimit": True,
-})
+    }
+else:
+    isauth = False
+    print("Warning: Using without authentication")
+    args = {
+        "enableRateLimit": True,
+    }
 
-kraken.checkRequiredCredentials()
+kraken = getattr(ccxt, config.EXCHANGE)(args)
+
+if isauth:
+    kraken.checkRequiredCredentials()
 
 oid = input("Order ID? ")
 o = kraken.fetch_order(oid)
