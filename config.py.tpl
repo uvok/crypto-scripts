@@ -1,2 +1,3 @@
 APIKEY = ""
 SECRET = ""
+EXCHANGE = "kraken"

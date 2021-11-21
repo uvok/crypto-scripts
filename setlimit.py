@@ -10,7 +10,7 @@ except ImportError:
     vprompt=0
 import config
 
-kraken = ccxt.kraken({
+kraken = getattr(ccxt, config.EXCHANGE)({
         "apiKey": config.APIKEY,
         "secret": config.SECRET,
         "enableRateLimit": True,
