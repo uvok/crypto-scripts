@@ -90,7 +90,7 @@ while True:
 
                 print("Open:")
                 for o in opened:
-                    print(f"Cancel {o["id"]}")
+                    print(f"Cancel {o['id']}")
                     kraken.cancel_order(o["id"])
                 remove_candidates.append(pairs)
         ## for pair in track_pairs
