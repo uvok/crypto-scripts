@@ -28,7 +28,9 @@ Might be adjustable to other exchanges.
   using early chances.
   
   Again, freqtrade might be a better option.
-
+- trail.py:
+  Manual trailing stop loss *for margin*.
+  Places 'leverage' argument (probably only for Kraken?)
 
 ## Requirements
 
