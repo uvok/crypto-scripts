@@ -1,32 +1,18 @@
-from pprint import pprint as pp
+import sys
 import time
+
 import ccxt
 from ccxt.base import errors as err
+
 import config
-import sys
+import load
+from custom_input import *
+
+kraken = load.get_exchange()
 
 pair = None
 if len(sys.argv) == 2:
     pair = sys.argv[1]
-
-if hasattr(config, "APIKEY") and hasattr(config, "SECRET"):
-    isauth = True
-    args = {
-        "apiKey": config.APIKEY,
-        "secret": config.SECRET,
-        "enableRateLimit": True,
-    }
-else:
-    isauth = False
-    print("Warning: Using without authentication")
-    args = {
-        "enableRateLimit": True,
-    }
-
-kraken = getattr(ccxt, config.EXCHANGE)(args)
-
-if isauth:
-    kraken.checkRequiredCredentials()
 
 orders = kraken.fetchOpenOrders(pair)
 

@@ -1,27 +1,14 @@
 import sys
 import time
+
 import ccxt
 from ccxt.base import errors as err
+
 import config
+import load
+from custom_input import *
 
-if hasattr(config, "APIKEY") and hasattr(config, "SECRET"):
-    isauth = True
-    args = {
-        "apiKey": config.APIKEY,
-        "secret": config.SECRET,
-        "enableRateLimit": True,
-    }
-else:
-    isauth = False
-    print("Warning: Using without authentication")
-    args = {
-        "enableRateLimit": True,
-    }
-
-kraken = getattr(ccxt, config.EXCHANGE)(args)
-
-if isauth:
-    kraken.checkRequiredCredentials()
+kraken = load.get_exchange()
 
 oid = input("Order ID? ")
 o = kraken.fetch_order(oid)

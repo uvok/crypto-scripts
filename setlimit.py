@@ -1,58 +1,14 @@
 import sys
-from pprint import pprint as pp
 import time
+
 import ccxt
 from ccxt.base import errors as err
-try:
-    import questionary
-    vprompt=1
-except ImportError:
-    vprompt=0
+
 import config
+import load
+from custom_input import *
 
-if hasattr(config, "APIKEY") and hasattr(config, "SECRET"):
-    isauth = True
-    args = {
-        "apiKey": config.APIKEY,
-        "secret": config.SECRET,
-        "enableRateLimit": True,
-    }
-else:
-    isauth = False
-    print("Warning: Using without authentication")
-    args = {
-        "enableRateLimit": True,
-    }
-
-kraken = getattr(ccxt, config.EXCHANGE)(args)
-
-if isauth:
-    kraken.checkRequiredCredentials()
-
-def my_input(query):
-    if vprompt:
-        return questionary.text(query).ask()
-    else:
-        return input(query+" ")
-
-def my_select(query, options):
-    if vprompt:
-        return questionary.select(
-            query,
-            choices=options
-        ).ask()
-    else:
-        txt = f"{query} ({', '.join(options)}) "
-        return input(txt)
-
-def my_confirm(query):
-    if vprompt:
-        return questionary.confirm(query, default=False, auto_enter=False).ask()
-    else:
-        reply = my_input(query)
-        reply = reply.lower()[0]
-        return reply[0] == "y"
-
+kraken = load.get_exchange()
 
 def get_market_price(exchange, pair):
     # limit to 1
