@@ -10,7 +10,7 @@ from custom_input import *
 
 kraken = load.get_exchange()
 
-oid = input("Order ID? ")
+oid = my_input("Order ID?")
 o = kraken.fetch_order(oid)
 FACTOR = 0.99
 

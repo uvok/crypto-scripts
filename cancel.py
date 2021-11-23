@@ -26,7 +26,7 @@ curr_pairs = []
 print("Enter orders to track. Empty to finish. n for next pair.")
 
 while True:
-    inp = input("> ")
+    inp = my_input(">")
     if inp == "n" or inp == "":
         if curr_pairs:
             track_pairs.append(curr_pairs)
