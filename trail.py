@@ -1,5 +1,6 @@
 import sys
 import time
+from statistics import mean
 
 import ccxt
 from ccxt.base import errors as err
@@ -12,12 +13,20 @@ kraken = load.get_exchange()
 
 oid = my_input("Order ID?")
 o = kraken.fetch_order(oid)
-FACTOR = 0.99
+
+while True:
+    factor = my_input("Trailing factor? (e.g. 0.9 for a 10% drop)")
+    factor = float(factor)
+    if factor > 0 and factor < 1:
+        break
 
 while o["status"] == "open":
     print("Iterate")
-    ob = kraken.fetch_order_book(o["symbol"], 1)
-    sp = ob['bids'][0][0] * FACTOR
+    # fetch 3 prices, take average. Smoothes out a bit
+    ob = kraken.fetch_order_book(o["symbol"], 3)
+    bids = ob['bids']
+    avg_price = mean([bid[0] for bid in bids])
+    sp = round(avg_price * factor, 2)
 
     if o["price"] < sp:
         print(f"Update order to new sell price {sp} in 3 seconds")
